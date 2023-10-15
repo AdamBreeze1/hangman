@@ -24,9 +24,8 @@ The aim of this project is to provide a basic hangman game foundation where play
 ## Installation
 Clone the repository:
 
-
 ## Usage
-1. Run the Python script.
+1. Run the Python script. (You can use `python hangman.py` in the command pallet)
 2. Enter a letter when prompted to guess a letter.
 
 ## File Structure
