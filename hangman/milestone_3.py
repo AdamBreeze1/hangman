@@ -11,13 +11,23 @@ def choice(words):
 
 # Assigns the random word to the variable "word"
 word = choice(word_list)
+print(word)
 
-# Gets the input of the user and assigns it to variable "guess"
-guess = input('Enter a letter you would like to guess: ')
+def ask_for_input():
+    # Gets the input of the user and assigns it to variable "guess"
+    guess = input('\n\rEnter a letter you would like to guess: ')
+    return guess
 
-# Checks the user input is a single character
-if len(guess) == 1:
-    print('Good guess')
-else:
-    print('Oops! That is not a valid input.')
+def check_guess(guess):
+    # Checks the user input is a single alpha character
+    while True:
+        if len(guess) == 1 and guess.isalpha():
+            break
+        else:
+            print('Oops! That is not a valid input.')
+    # Check if the letter is in "word" variable
+    if guess in word:
+        print(f'Good Guess! {guess} is in the word.')
+    else:
+        print(f'Wrong! {guess} is not in the word, try again.')
 
