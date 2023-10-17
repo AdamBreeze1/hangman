@@ -12,7 +12,7 @@ class Hangman:
     # Function to randomly choose from a list of words
     def choice(self):
         rand = random.randint(0, len(self.word_list) - 1)
-        word_choice = word_list[rand]
+        word_choice = self.word_list[rand]
         return word_choice
 
     # Gets the input of the user and assigns it to variable "guess"
@@ -49,10 +49,30 @@ class Hangman:
 
 
 # list of words used for PC's word entry
-word_list = ['strawberry', 'bananna', 'mango', 'watermelon', 'peach']
+word_list = ['st', 'ba', 'mao', 'walon', 'peh']
 
-hangman = Hangman(word_list)
+def play_game(word_list):
+    num_lives = 5
+    while True:
+        game = Hangman(word_list, num_lives)
+        print(game.word)
 
-print(hangman.word)
+        while num_lives > 0 and game.num_letters > 0:
+            game.ask_for_input()
 
-hangman.ask_for_input()
+        if num_lives == 0:
+            print('You lost!')
+        else:
+            print('Congratulations. You won the game!')
+
+        play_again = input('Would you like to play again? (y/n)')
+        if play_again == 'y':
+            play_game(word_list)
+        elif play_again == 'n':
+            print('Ha! The computers will rise!')
+            break
+        else:
+            print('Maybe try reading the instructions next time.')
+            break
+
+play_game(word_list)
