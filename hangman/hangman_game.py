@@ -7,7 +7,8 @@ class Hangman:
         self.word = self.choice()
         self.word_guessed = ['_'] * len(self.word)
         self.num_letters = len(self.word)
-        self.list_of_guesses = []      
+        self.list_of_guesses = []
+        self.list_of_avaliable_letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']      
         
     # Function to randomly choose from a list of words
     def choice(self):
@@ -16,7 +17,7 @@ class Hangman:
         word_choice_lower = word_choice.lower()
         return word_choice_lower
 
-    # Gets the input of the user and assigns it to variable "guess"
+    # Gets the input of the user check it is valid and assigns it to variable "guess"
     def ask_for_input(self):
         word_guessed_string = ''.join(self.word_guessed)
         print(f'Can you guess what word I am thinking of? You get {self.num_lives} lives!')
@@ -24,6 +25,7 @@ class Hangman:
         
         while self.num_lives > 0 and self.num_letters > 0:
             guess = input('\n\rEnter a letter you would like to guess: ')
+
             # Checks the user input is a single alpha character
             if len(guess) != 1 or not guess.isalpha():
                 print('Words usually have letters in. Please, enter a single alphabetical character.')
@@ -32,6 +34,18 @@ class Hangman:
             else:
                 self.check_guess(guess)
                 self.list_of_guesses.append(guess)
+
+            # Give a hint 
+            if self.num_lives == 2 and self.num_letters >= 4 or self.num_lives == 1 and self.num_letters >= 3:
+                need_a_hint = input('\n\rLooks liks you\'re struggling, need a hint? (y/n): ')
+                if need_a_hint == 'y':
+                    remaining_letters = set(self.list_of_avaliable_letters) - set(self.list_of_guesses)
+                    missing_letter = remaining_letters.pop()
+                    potential_hints = list(remaining_letters.intersection(set(self.word)))
+                    missing_letter = random.choice(potential_hints)
+                    print(f'Here\'s a hint: The word contains the letter "{missing_letter}".')
+                else:
+                    print('So you thint you\'re smart enough to beat me without hints?')
 
     def check_guess(self, guess):
         # Change guess to lower case
@@ -50,8 +64,6 @@ class Hangman:
             self.num_lives -= 1
             print(f'You now have {self.num_lives} lives.')
             print(''.join(self.word_guessed))
-
-
     
 def play_game(imported_words):
     """
@@ -77,7 +89,7 @@ def play_game(imported_words):
 
     Have fun playing Hangman!
     """
-    print('\n\rWelcome to hangman!. To play the game, enter a single letter at a time.\n\r')
+    print('\n\rWelcome to hangman! To play the game, enter a single letter at a time.\n\r')
     num_lives = 6
 
 
@@ -119,11 +131,14 @@ def play_game(imported_words):
     else:
         print('Maybe try reading the instructions next time.')
 
+# Choosing the difficulty
 while True:
     difficuly = input('Would you like me to go easy (e) or hard (h) on you? (e/h): ')
     if difficuly == 'e':
         from list_of_words import common_words_easy
         imported_words = common_words_easy
+        import os
+        os.system('cls' if os.name == 'nt' else 'clear')
         break
     elif difficuly == 'h':
         from list_of_words import common_words_hard
