@@ -1,12 +1,9 @@
 import random
-from list_of_words import common_words
-import os
-os.system('cls' if os.name == 'nt' else 'clear')
 
 class Hangman:
-    def __init__(self, common_words:list, num_lives=5):
+    def __init__(self, imported_words:list, num_lives):
         self.num_lives = num_lives
-        self.common_words = common_words
+        self.imported_words = imported_words
         self.word = self.choice()
         self.word_guessed = ['_'] * len(self.word)
         self.num_letters = len(self.word)
@@ -14,8 +11,8 @@ class Hangman:
         
     # Function to randomly choose from a list of words
     def choice(self):
-        rand = random.randint(0, len(self.common_words) - 1)
-        word_choice = self.common_words[rand]
+        rand = random.randint(0, len(self.imported_words) - 1)
+        word_choice = self.imported_words[rand]
         word_choice_lower = word_choice.lower()
         return word_choice_lower
 
@@ -23,7 +20,7 @@ class Hangman:
     def ask_for_input(self):
         word_guessed_string = ''.join(self.word_guessed)
         print(f'Can you guess what word I am thinking of? You get {self.num_lives} lives!')
-        print(f'{word_guessed_string} which has {self.num_letters} letters.')
+        print(f'{word_guessed_string}')
         
         while self.num_lives > 0 and self.num_letters > 0:
             guess = input('\n\rEnter a letter you would like to guess: ')
@@ -54,7 +51,9 @@ class Hangman:
             print(f'You now have {self.num_lives} lives.')
             print(''.join(self.word_guessed))
 
-def play_game(common_words):
+
+    
+def play_game(imported_words):
     """
     Hangman Game
 
@@ -63,7 +62,7 @@ def play_game(common_words):
     player has a limited number of lives to guess the word.
 
     Attributes:
-        common_words (list): A list of common words used for word selection.
+        imported_words (list): A list of common words used for word selection.
         num_lives (int): The number of lives the player has to guess the word.
 
     Methods:
@@ -78,9 +77,11 @@ def play_game(common_words):
 
     Have fun playing Hangman!
     """
-    print('\n\rTo play the game, enter a single letter at a time.\n\r')
-    num_lives = 5
-    game = Hangman(common_words, num_lives)
+    print('\n\rWelcome to hangman!. To play the game, enter a single letter at a time.\n\r')
+    num_lives = 6
+
+
+    game = Hangman(imported_words, num_lives)
 
     # comment out to remove printed answer
     # print(game.word)
@@ -112,10 +113,26 @@ def play_game(common_words):
 
     play_again = input('Would you like to play again? (y/n): ')
     if play_again == 'y':
-        play_game(common_words)
+        play_game(imported_words)
     elif play_again == 'n':
         print('Ha! The computers will rise!')
     else:
         print('Maybe try reading the instructions next time.')
 
-play_game(common_words)
+while True:
+    difficuly = input('Would you like me to go easy (e) or hard (h) on you? (e/h): ')
+    if difficuly == 'e':
+        from list_of_words import common_words_easy
+        imported_words = common_words_easy
+        break
+    elif difficuly == 'h':
+        from list_of_words import common_words_hard
+        import os
+        os.system('cls' if os.name == 'nt' else 'clear')
+        imported_words = common_words_hard
+        break
+    else: 
+        print('Type either "e" for easy or "h" for hard and press enter.')
+
+
+play_game(imported_words)
